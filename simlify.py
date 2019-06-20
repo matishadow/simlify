@@ -1,3 +1,5 @@
+import sublime
+import sublime_plugin
 import random
 
 
@@ -21,14 +23,11 @@ def simlify(string):
     return "".join(string_as_list)
 
 
-def main():
-    lorem_ipsum = 'Proin vitae vestibulum lorem. Phasellus id odio ligula. Sed quis nulla in mi elementum ' \
-                  'condimentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc lobortis ipsum eu ' \
-                  'gravida ultricies. Vivamus ac posuere lacus. Duis eu ornare nisi, ac sodales risus. '
+class SimlifyCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        contents = self.view.substr(sublime.Region(0, self.view.size()))
 
-    print(lorem_ipsum)
-    print(simlify(lorem_ipsum))
+        simlified = simlify(contents)
 
-    return
-
-main()
+        self.view.erase(edit, sublime.Region(0, self.view.size()))
+        self.view.insert(edit, 0, simlified)
